@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+}
+
+.view-high-score-button {
+  color: purple;
+  border: none;
+  background-color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.view-high-score-button:hover {
+  color: rgb(184, 73, 184);
+}
+
+.view-high-score-button:active {
+  color: blue;
+}
+
+.timer-count {
+  position: absolute;
+  justify-content: flex-end;
+  margin-left: 1640px;
+  font-size: 20px;
+  font-weight: bold;
+}
