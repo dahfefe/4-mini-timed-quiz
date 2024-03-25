@@ -10,18 +10,26 @@
   <body>
     <header>
       <button class="view-high-score-button">View High Scores</button>
-      <span class="timer-count">Time: 60</span>
+      <span class="timer-text">Time:</span>
+      <div class="timer-count">60</div>
     </header>
 
     <main>
-      <section class="card">
+      <section id="form">
         <p class="title">Coding Quiz Challenge</p>
-        <p class="instructions">Try to answer the following code-related questions within the time limit, Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
-        <button>Start Quiz</button>
+        <p class="instructions">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+        <button class="start-button" onClick="showNextQuestion()">Start Quiz</button>
       </section>
+
+      <div id="question" style="display: none;"></div>
+      <div id="answers" style="display: none;"></div>
+      <div id="next-button" style="display: none;"><input type="button" value="Next" onclick="showNextQuestion()"></div>
+      <div id="submit-button" style="display: none;"><input type="button" value="Submit" onclick="showTotalScore()"></div>
+      <div id="total-score" style="display: none;">Total Score: 0</div>
 
     </main>
     
     <script src="assets/js/script.js"></script>
+
   </body>
 </html>

@@ -1,7 +1,10 @@
+var timerElement = document.querySelector(".timer-count");
+var startButton = document.querySelector(".start-button");
 
-let currentQuestionIndex = 0;
+var timer;
+var timerCount;
 
-const multiChoiceCards = [{
+var questions = [{
   question: "Commonly used data types DO NOT include:",
   answers: [
     { button: "strings", value: 0},
@@ -30,6 +33,25 @@ const multiChoiceCards = [{
 // Initialize the total score
 let totalScore = 0;
 
+function startGame() {
+  timerCount = 60;
+  startButton.disabled = true;
+
+  startTimer();
+}
+
+function startTimer() {
+  // Sets timer
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = timerCount;
+    // Tests if time has run out
+    if (timerCount === 0) {
+      clearInterval(timer);
+      }  
+  })
+}
+
 // Add the value of the selected answer to the total score and uncheck the other radio buttons
 function updateScore(selectedAnswer) {
   // Check if a radio button has been selected
@@ -54,7 +76,7 @@ function updateScore(selectedAnswer) {
 function showNextQuestion() {
 
   // Hide the form
-  document.getElementById("form").style.display = "none";
+  document.getElementById("#form").style.display = "none";
 
   // Show the question and answers
   document.getElementById("question").style.display = "block";
@@ -99,6 +121,6 @@ function showTotalScore() {
   document.getElementById("total-score").innerHTML = "Total Score: " + totalScore;
 }; 
 
-
+startButton.on('click', startGame);
 
 
