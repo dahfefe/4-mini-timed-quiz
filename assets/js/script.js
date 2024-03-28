@@ -15,10 +15,11 @@ let currentQuestion = 0; // Keeps track of the current question
 let timerId;
 let score = 0;
 
-let questions = [  // Array to store questions and answers
-  { question: "What is the capital of France?", answer: "A", choices: ["Paris", "London", "Berlin", "Rome"] },
-  { question: "What is the largest planet in our solar system?", answer: "C", choices: ["Earth", "Mars", "Jupiter", "Venus"] },
-  // Add more questions here
+let questions = [  
+  { question: "Commonly used data types DO NOT include:", answer: "C", choices: ["A)  strings", "B)  booleans", "C)  alerts", "D)  numbers"] },
+  { question: "The condition in an if / else statement is enclosed within _____.", answer: "C", choices: ["A)  quotes", "B)  curly brackets", "C)  parentheses", "D)  square brackets"] },
+  { question: "Arrays in JavaScript can be used to store _____.", answer: "D", choices: ["A)  numbers and strings", "B)  other arrays", "C)  booleans", "D)  all of the above"] },
+  { question: "Will the grader give this assignment 100/100?", answer: "D", choices: ["A)  possibly", "B)  no, this assignment came out terrible", "C)  I have to think about it", "D)  most definitely"] },
 ];
 
 function startTimer() {
@@ -35,14 +36,14 @@ function startTimer() {
 
 function showQuestion() {
   
-  /*
   if (currentQuestion < questions.length) {
-    choiceA.style.display = "block";
-    choiceB.style.display = "block";
-    choiceC.style.display = "block";
-    choiceD.style.display = "block";
+    startPage.style.display = "none";
+    questionText.style.display = "block";
+    choiceA.style.display = "inline-block";
+    choiceB.style.display = "inline-block";
+    choiceC.style.display = "inline-block";
+    choiceD.style.display = "inline-block";
   }
-  */
   
   if (currentQuestion >= questions.length) {
     questionText.textContent = "You have finished the quiz!";
@@ -96,32 +97,6 @@ startButton.addEventListener("click", function() {
 
 
 /*
-
-var questions = [{
-  question: "Commonly used data types DO NOT include:",
-  answers: [
-    { button: "strings", value: 0},
-    { button: "booleans", value: 0},
-    { button: "alerts", value: 1}, 
-    { button: "numbers", value: 0},
-  ]
-}, {
-  question: "The condition in an if / else statement is enclosed within _____.", 
-  answers: [
-    { button: "quotes", value: 0},
-    { button: "curly brackets", value: 0},
-    { button: "parentheses", value: 1}, 
-    { button: "square brackets", value: 0},
-  ]
-}, {
-  question: "Arrays in JavaScript can be used to store _____.", 
-  answers: [
-    { button: "numbers and strings", value: 0},
-    { button: "other arrays", value: 0},
-    { button: "booleans", value: 0}, 
-    { button: "all of the above", value: 1},
-  ]
-}];
 
 // Initialize the total score
 let totalScore = 0;

@@ -66,3 +66,15 @@ button:hover {
 button:active {
   opacity: 0.5;
 }
+
+#question {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 70px;
+  width: 100vw;
+  color: rgb(0, 0, 0);
+}
+
+li {
+  list-style: none;
+}
