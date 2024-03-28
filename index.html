@@ -13,7 +13,7 @@
       <span class="timer-text">Time: <span class="timer-count">60</span></span>
     </header>
 
-    <main>
+    <main id="start-page">
 
       <div class="container">
         <div id="home" class="flex-center flex-column">
@@ -23,16 +23,30 @@
 
       <section id="form">
         <p class="instructions">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
-        <button class="start-button" onClick="showNextQuestion()">Start Quiz</button>
+        <button class="start-button">Start Quiz</button>
       </section>
 
+    </main>
+
+    <section>
+      <div id="questionContainer">
+        <p id="question" style="display: none;"></p>
+        <button id="choiceA" >Option A</button>
+        <button id="choiceB" >Option B</button>
+        <button id="choiceC" >Option C</button>
+        <button id="choiceD" >Option D</button>
+      </div>
+      <div id="scoreboard"></div>
+
+      <!--
       <div id="question" style="display: none;"></div>
       <div id="answers" style="display: none;"></div>
       <div id="next-button" style="display: none;"><input type="button" value="Next" onclick="showNextQuestion()"></div>
       <div id="submit-button" style="display: none;"><input type="button" value="Submit" onclick="showTotalScore()"></div>
       <div id="total-score" style="display: none;">Total Score: 0</div>
+      -->
 
-    </main>
+    </section>
     
     <script src="assets/js/script.js"></script>
 

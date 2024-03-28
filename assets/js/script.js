@@ -1,8 +1,101 @@
+
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
+const questionContainer = document.getElementById("questionContainer");
+const questionText = document.getElementById("question");
+const scoreboard = document.getElementById("scoreboard");
+const startPage = document.getElementById("start-page");
 
-var timer;
-var timerCount;
+const choiceA = document.getElementById("choiceA");
+const choiceB = document.getElementById("choiceB");
+const choiceC = document.getElementById("choiceC");
+const choiceD = document.getElementById("choiceD");
+
+let currentQuestion = 0; // Keeps track of the current question
+let timerId;
+let score = 0;
+
+let questions = [  // Array to store questions and answers
+  { question: "What is the capital of France?", answer: "A", choices: ["Paris", "London", "Berlin", "Rome"] },
+  { question: "What is the largest planet in our solar system?", answer: "C", choices: ["Earth", "Mars", "Jupiter", "Venus"] },
+  // Add more questions here
+];
+
+function startTimer() {
+  let remainingTime = 60;
+  timerId = setInterval(function() {
+    remainingTime--;
+    timerElement.textContent = remainingTime;
+    if (remainingTime <= 0) {
+      clearInterval(timerId);
+      gameOver();
+    }
+  }, 1000);
+}
+
+function showQuestion() {
+  
+  /*
+  if (currentQuestion < questions.length) {
+    choiceA.style.display = "block";
+    choiceB.style.display = "block";
+    choiceC.style.display = "block";
+    choiceD.style.display = "block";
+  }
+  */
+  
+  if (currentQuestion >= questions.length) {
+    questionText.textContent = "You have finished the quiz!";
+    startPage.style.display = "none";
+    gameOver();
+    return;
+  } 
+  
+  const questionDisplayedNow = questions[currentQuestion];
+  questionText.textContent = questionDisplayedNow.question;
+  
+  const choices = questionContainer.querySelectorAll("button");
+  for (let i = 0; i < choices.length; i++) {
+    choices[i].textContent = questionDisplayedNow.choices[i];
+    choices[i].addEventListener("click", function() {
+      checkAnswer(questionDisplayedNow.answer === this.textContent);
+    });
+  }
+}
+
+function checkAnswer(isCorrect) {
+  if (isCorrect) {
+    score += 5;
+  } else {
+    clearInterval(timerId);
+    timerId = setInterval(function() {
+      let remainingTime = Math.max(0, parseInt(timeLeftSpan.textContent) - 5);
+      timeLeftSpan.textContent = remainingTime;
+      if (remainingTime <= 0) {
+        clearInterval(timerId);
+        gameOver();
+      }
+    }, 1000);
+  }
+  currentQuestion++;
+  showQuestion();
+}
+
+function gameOver() {
+  clearInterval(timerId);
+  startButton.style.display = "none";
+  scoreboard.textContent = `Your Score: ${score}`;
+  // You can implement high score storage here (local storage, database etc.)
+}
+
+startButton.addEventListener("click", function() {
+  currentQuestion++;
+  showQuestion();
+  startTimer();
+});
+
+
+/*
 
 var questions = [{
   question: "Commonly used data types DO NOT include:",
@@ -123,4 +216,4 @@ function showTotalScore() {
 
 startButton.on('click', startGame);
 
-
+*/
