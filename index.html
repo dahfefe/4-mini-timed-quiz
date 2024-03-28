@@ -10,13 +10,18 @@
   <body>
     <header>
       <button class="view-high-score-button">View High Scores</button>
-      <span class="timer-text">Time:</span>
-      <div class="timer-count">60</div>
+      <div class="timer-text">Time:<span class="timer-count">60</span></div>
     </header>
 
     <main>
+
+      <div class="container">
+        <div id="home" class="flex-center flex-column">
+          <h1>Coding Quiz Challenge</h1>
+        </div>
+      </div>
+
       <section id="form">
-        <p class="title">Coding Quiz Challenge</p>
         <p class="instructions">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
         <button class="start-button" onClick="showNextQuestion()">Start Quiz</button>
       </section>
