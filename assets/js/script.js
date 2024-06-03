@@ -13,6 +13,10 @@ const choiceD = document.getElementById("choiceD");
 
 const initialPage = document.getElementById("enter-initials-page");
 
+const goBackButton = document.getElementById("go-back-button")
+const clearButton =document.getElementById("clear-button")
+const highScoreText =document.getElementById("high-scores-display")
+
 let currentQuestion = -1; // Keeps track of the current question
 let timerId;
 let score = 0;
