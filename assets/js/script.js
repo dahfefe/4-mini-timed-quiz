@@ -72,13 +72,9 @@ function showQuestion() {
     choiceB.style.display = "inline-block";
     choiceC.style.display = "inline-block";
     choiceD.style.display = "inline-block";
-  }
-  
-  if (currentQuestion > questions.length) {
-    // questionText.textContent = "You have finished the quiz!";
+  } else {
     startPage.style.display = "none";
     gameOver();
-    return;
   } 
   
   const questionDisplayedNow = questions[currentQuestion];
@@ -86,15 +82,16 @@ function showQuestion() {
   
   const choices = questionContainer.querySelectorAll("button");
   for (let i = 0; i < choices.length; i++) {
+    const userSelection = questionDisplayedNow.choices[i];
     choices[i].textContent = questionDisplayedNow.choices[i];
     choices[i].addEventListener("click", function() {
-      checkAnswer(choices);
+      checkAnswer(userSelection);
     });
   }
 }
 
-function checkAnswer(choices) {
-  if (choices === questionDisplayedNow.answer) {
+function checkAnswer(userSelection) {
+  if (userSelection === questionDisplayedNow.answer) {
     // If user selects a correct answer, increase score by 5
     score += 5;
     // If answer is correct display 'Correct Answer!" for one second
@@ -103,11 +100,14 @@ function checkAnswer(choices) {
         correctAnswerDisplay.classList.add("hidden");
     }, 1000);
   } else {
-    timerId = setInterval(function() {
-      remainingTime = Math.max(0, parseInt(timerElement.textContent) - 5);
-      timerElement.textContent = remainingTime;
-      
+    // If answer is wrong display 'Wrong Answer!" for one second
+    wrongAnswerDisplay.classList.remove("hidden");
+    setTimeout(() => {
+        wrongAnswerDisplay.classList.add("hidden");
     }, 1000);
+
+    // When user selects the wrong answer, then time is subtracted from the clock by -10 seconds
+    remainingTime = remainingTime - 10  
   }
   currentQuestion++;
   showQuestion();
@@ -133,79 +133,3 @@ startButton.addEventListener("click", function() {
   startTimer();
 });
 
-
-/*
-
-
-// Add the value of the selected answer to the total score and uncheck the other radio buttons
-function updateScore(selectedAnswer) {
-  // Check if a radio button has been selected
-  if (!selectedAnswer.checked) {
-    return;
-  }
-
-  // Add the value of the selected answer to the total score
-  totalScore += parseInt(selectedAnswer.value);
-
-  // Get all the radio buttons
-  const radioButtons = document.getElementsByName("answer");
-  // Loop through the radio buttons
-  for (const radioButton of radioButtons) {
-    // If the radio button is not the selected answer, uncheck it
-    if (radioButton !== selectedAnswer) {
-      radioButton.checked = false;
-    }
-  }
-}
-// Show the next question
-function showNextQuestion() {
-
-  // Hide the form
-  document.getElementById("#form").style.display = "none";
-
-  // Show the question and answers
-  document.getElementById("question").style.display = "block";
-  document.getElementById("answers").style.display = "block";
-  document.getElementById("next-button").style.display = "block";
-
-  // Check if the current question is the last question
-  if(currentQuestionIndex < questions.length){
-    // If it is not, get the current question
-    const currentQuestion = questions[currentQuestionIndex];
-
-    // Update the question text
-    document.getElementById("question").innerHTML = currentQuestion.question;
-    //clear answers
-    document.getElementById("answers").innerHTML = '';
-    // Show the answers for the current question
-    for (const answer of currentQuestion.answers) {
-      document.getElementById("answers").innerHTML += `
-        <input type="radio" name="answer" value="${answer.value}" onchange="updateScore(this)"> ${answer.text}<br>
-      `;
-    }
-
-    // Update the current question index
-    currentQuestionIndex++;
-  }
-  if (currentQuestionIndex === questions.length) {
-      // If it is, hide the "Next" button and show the "Submit" button
-      document.getElementById("next-button").style.display = "none";
-      document.getElementById("submit-button").style.display = "block";
-  }
-}
-
-// Show the total score
-function showTotalScore() {
-  // Hide the question and answers
-  document.getElementById("question").style.display = "none";
-  document.getElementById("answers").style.display = "none";
-  document.getElementById("submit-button").style.display = "none";
-
-  // Show the total score
-  document.getElementById("total-score").style.display = "block";
-  document.getElementById("total-score").innerHTML = "Total Score: " + totalScore;
-}; 
-
-startButton.on('click', startGame);
-
-*/
