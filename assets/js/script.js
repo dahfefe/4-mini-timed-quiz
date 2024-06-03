@@ -13,10 +13,11 @@ const choiceD = document.getElementById("choiceD");
 
 const initialPage = document.getElementById("enter-initials-page");
 
-let currentQuestion = 0; // Keeps track of the current question
+let currentQuestion = -1; // Keeps track of the current question
 let timerId;
 let score = 0;
 
+// coding quiz questions
 let questions = [  
   { 
     question: "Commonly used data types DO NOT include:", 
