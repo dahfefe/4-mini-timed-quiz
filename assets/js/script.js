@@ -25,7 +25,8 @@ let questions = [
     choices: ["A)  strings", "B)  booleans", "C)  alerts", "D)  numbers"] 
   },
   { 
-    question: "The condition in an if / else statement is enclosed within _____.", answer: "C", 
+    question: "The condition in an if / else statement is enclosed within _____.", 
+    answer: "C", 
     choices: ["A)  quotes", "B)  curly brackets", "C)  parentheses", "D)  square brackets"] 
   },
   { 
@@ -39,6 +40,7 @@ let questions = [
     choices: ["A)  possibly", "B)  no, this assignment came out terrible", "C)  I have to think about it", "D)  most definitely"] 
   },
 ];
+console.log(questions)
 
 function startTimer() {
   let remainingTime = 60;
@@ -63,7 +65,7 @@ function showQuestion() {
     choiceD.style.display = "inline-block";
   }
   
-  if (currentQuestion >= questions.length) {
+  if (currentQuestion > questions.length) {
     // questionText.textContent = "You have finished the quiz!";
     startPage.style.display = "none";
     gameOver();

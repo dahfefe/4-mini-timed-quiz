@@ -14,18 +14,15 @@
     </header>
 
     <main id="start-page">
-
       <div class="container">
         <div id="home" class="flex-center flex-column">
           <h1>Coding Quiz Challenge</h1>
         </div>
       </div>
-
       <section id="form">
         <p class="instructions">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
         <button class="start-button">Start Quiz</button>
       </section>
-
     </main>
 
     <section>
@@ -46,7 +43,12 @@
           <input type="text" id="enter-initials"/> <button>Submit</button>
       </div>
 
-      <div id="scoreboard"></div>
+      <div id="score-board">
+        <h3 id="high-scores-display" style="display: none;">High Scores</h3>
+        <ul id="high-scores"></ul>
+        <button id="go-back-button" style="display: none;">Go Back</button>
+        <button id="clear-button" style="display: none;">Clear High Scores</button>
+      </div>
 
       <!--
       <div id="question" style="display: none;"></div>
