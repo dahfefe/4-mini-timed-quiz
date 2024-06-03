@@ -14,10 +14,10 @@ const choiceD = document.getElementById("choiceD");
 const initialPage = document.getElementById("enter-initials-page");
 
 const goBackButton = document.getElementById("go-back-button")
-const clearButton =document.getElementById("clear-button")
+const clearButton = document.getElementById("clear-button")
 const highScoreText =document.getElementById("high-scores-display")
 
-let currentQuestion = -1; // Keeps track of the current question
+let currentQuestion = 0; // Keeps track of the current question
 let timerId;
 let score = 0;
 
@@ -25,32 +25,35 @@ let score = 0;
 let questions = [  
   { 
     question: "Commonly used data types DO NOT include:", 
-    answer: "C", 
+    answer: "C)  alerts", 
     choices: ["A)  strings", "B)  booleans", "C)  alerts", "D)  numbers"] 
   },
   { 
     question: "The condition in an if / else statement is enclosed within _____.", 
-    answer: "C", 
+    answer: "C)  parentheses", 
     choices: ["A)  quotes", "B)  curly brackets", "C)  parentheses", "D)  square brackets"] 
   },
   { 
     question: "Arrays in JavaScript can be used to store _____.", 
-    answer: "D", 
+    answer: "D)  all of the above", 
     choices: ["A)  numbers and strings", "B)  other arrays", "C)  booleans", "D)  all of the above"] 
   },
   { 
     question: "Will the grader give this assignment 100/100?", 
-    answer: "D", 
+    answer: "D)  most definitely", 
     choices: ["A)  possibly", "B)  no, this assignment came out terrible", "C)  I have to think about it", "D)  most definitely"] 
   },
 ];
 console.log(questions)
 
+// timer function
 function startTimer() {
+  // set starting time for 60 seconds
   let remainingTime = 60;
   timerId = setInterval(function() {
     remainingTime--;
     timerElement.textContent = remainingTime;
+    // if time runs out, end the quiz and return time to 60 seconds
     if (remainingTime === 0) {
       clearInterval(timerId);
       gameOver();
