@@ -10,6 +10,8 @@ const choiceA = document.getElementById("choiceA");
 const choiceB = document.getElementById("choiceB");
 const choiceC = document.getElementById("choiceC");
 const choiceD = document.getElementById("choiceD");
+const wrongAnswerDisplay = document.getElementById("wrong-answer");
+const correctAnswerDisplay = document.getElementById("correct-answer");
 
 const initialPage = document.getElementById("enter-initials-page");
 
@@ -86,14 +88,20 @@ function showQuestion() {
   for (let i = 0; i < choices.length; i++) {
     choices[i].textContent = questionDisplayedNow.choices[i];
     choices[i].addEventListener("click", function() {
-      checkAnswer(questionDisplayedNow.answer === this.textContent);
+      checkAnswer(choices);
     });
   }
 }
 
-function checkAnswer(isCorrect) {
-  if (isCorrect) {
+function checkAnswer(choices) {
+  if (choices === questionDisplayedNow.answer) {
+    // If user selects a correct answer, increase score by 5
     score += 5;
+    // If answer is correct display 'Correct Answer!" for one second
+    correctAnswerDisplay.classList.remove("hidden");
+    setTimeout(() => {
+        correctAnswerDisplay.classList.add("hidden");
+    }, 1000);
   } else {
     timerId = setInterval(function() {
       remainingTime = Math.max(0, parseInt(timerElement.textContent) - 5);

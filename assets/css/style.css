@@ -78,3 +78,19 @@ button:active {
 li {
   list-style: none;
 }
+
+.hidden {
+  display: none;
+}
+
+#wrong-answer {
+  margin-top: 10px;
+  font-weight: bold;
+  color: red;
+}
+
+#correct-answer {
+  margin-top: 10px;
+  font-weight: bold;
+  color: rgb(106, 44, 214);
+}
