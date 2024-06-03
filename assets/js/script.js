@@ -11,15 +11,32 @@ const choiceB = document.getElementById("choiceB");
 const choiceC = document.getElementById("choiceC");
 const choiceD = document.getElementById("choiceD");
 
+const initialPage = document.getElementById("enter-initials-page");
+
 let currentQuestion = 0; // Keeps track of the current question
 let timerId;
 let score = 0;
 
 let questions = [  
-  { question: "Commonly used data types DO NOT include:", answer: "C", choices: ["A)  strings", "B)  booleans", "C)  alerts", "D)  numbers"] },
-  { question: "The condition in an if / else statement is enclosed within _____.", answer: "C", choices: ["A)  quotes", "B)  curly brackets", "C)  parentheses", "D)  square brackets"] },
-  { question: "Arrays in JavaScript can be used to store _____.", answer: "D", choices: ["A)  numbers and strings", "B)  other arrays", "C)  booleans", "D)  all of the above"] },
-  { question: "Will the grader give this assignment 100/100?", answer: "D", choices: ["A)  possibly", "B)  no, this assignment came out terrible", "C)  I have to think about it", "D)  most definitely"] },
+  { 
+    question: "Commonly used data types DO NOT include:", 
+    answer: "C", 
+    choices: ["A)  strings", "B)  booleans", "C)  alerts", "D)  numbers"] 
+  },
+  { 
+    question: "The condition in an if / else statement is enclosed within _____.", answer: "C", 
+    choices: ["A)  quotes", "B)  curly brackets", "C)  parentheses", "D)  square brackets"] 
+  },
+  { 
+    question: "Arrays in JavaScript can be used to store _____.", 
+    answer: "D", 
+    choices: ["A)  numbers and strings", "B)  other arrays", "C)  booleans", "D)  all of the above"] 
+  },
+  { 
+    question: "Will the grader give this assignment 100/100?", 
+    answer: "D", 
+    choices: ["A)  possibly", "B)  no, this assignment came out terrible", "C)  I have to think about it", "D)  most definitely"] 
+  },
 ];
 
 function startTimer() {
@@ -27,7 +44,7 @@ function startTimer() {
   timerId = setInterval(function() {
     remainingTime--;
     timerElement.textContent = remainingTime;
-    if (remainingTime <= 0) {
+    if (remainingTime === 0) {
       clearInterval(timerId);
       gameOver();
     }
@@ -46,7 +63,7 @@ function showQuestion() {
   }
   
   if (currentQuestion >= questions.length) {
-    questionText.textContent = "You have finished the quiz!";
+    // questionText.textContent = "You have finished the quiz!";
     startPage.style.display = "none";
     gameOver();
     return;
@@ -68,14 +85,10 @@ function checkAnswer(isCorrect) {
   if (isCorrect) {
     score += 5;
   } else {
-    clearInterval(timerId);
     timerId = setInterval(function() {
-      let remainingTime = Math.max(0, parseInt(timeLeftSpan.textContent) - 5);
-      timeLeftSpan.textContent = remainingTime;
-      if (remainingTime <= 0) {
-        clearInterval(timerId);
-        gameOver();
-      }
+      remainingTime = Math.max(0, parseInt(timerElement.textContent) - 5);
+      timerElement.textContent = remainingTime;
+      
     }, 1000);
   }
   currentQuestion++;
@@ -85,7 +98,14 @@ function checkAnswer(isCorrect) {
 function gameOver() {
   clearInterval(timerId);
   startButton.style.display = "none";
-  scoreboard.textContent = `Your Score: ${score}`;
+  questionText.style.display = "none";
+  choiceA.style.display = "none";
+  choiceB.style.display = "none";
+  choiceC.style.display = "none";
+  choiceD.style.display = "none";
+  initialPage.style.display = "block";
+
+  // scoreboard.textContent = `Your Score: ${score}`;
   // You can implement high score storage here (local storage, database etc.)
 }
 
@@ -98,27 +118,6 @@ startButton.addEventListener("click", function() {
 
 /*
 
-// Initialize the total score
-let totalScore = 0;
-
-function startGame() {
-  timerCount = 60;
-  startButton.disabled = true;
-
-  startTimer();
-}
-
-function startTimer() {
-  // Sets timer
-  timer = setInterval(function() {
-    timerCount--;
-    timerElement.textContent = timerCount;
-    // Tests if time has run out
-    if (timerCount === 0) {
-      clearInterval(timer);
-      }  
-  })
-}
 
 // Add the value of the selected answer to the total score and uncheck the other radio buttons
 function updateScore(selectedAnswer) {
