@@ -1,25 +1,28 @@
 
 var timerElement = document.querySelector(".timer-count");
-var startButton = document.querySelector(".start-button");
+var startButton = document.getElementById("start-button");
+var highScoresLink = document.querySelector(".view-high-score-button");
 const questionContainer = document.getElementById("questionContainer");
 const questionText = document.getElementById("question");
 const scoreboard = document.getElementById("scoreboard");
 const startPage = document.getElementById("start-page");
-
-const choiceA = document.getElementById("choiceA");
-const choiceB = document.getElementById("choiceB");
-const choiceC = document.getElementById("choiceC");
-const choiceD = document.getElementById("choiceD");
+var gameOverHeading = document.getElementById("game-over-heading");
+const quizStart = document.getElementById("start-button");
+const questionDisplay = document.getElementById("question");
+const answersDisplay = document.getElementById("answers");
 const wrongAnswerDisplay = document.getElementById("wrong-answer");
 const correctAnswerDisplay = document.getElementById("correct-answer");
-
 const initialPage = document.getElementById("enter-initials-page");
+const goBackButton = document.getElementById("go-back-button");
+const clearButton = document.getElementById("clear-button");
+const highScoreText = document.getElementById("high-scores-display");
+const highScoresList = document.getElementById("high-scores");
 
-const goBackButton = document.getElementById("go-back-button")
-const clearButton = document.getElementById("clear-button")
-const highScoreText =document.getElementById("high-scores-display")
+// Show contents for quiz instructions and "start" button when opening the page
+startPage.classList.remove("hidden")
 
-let currentQuestion = 0; // Keeps track of the current question
+// Keeps track of the current question
+let currentQuestionIndex = 0; 
 let timerId;
 // set starting time for 60 seconds
 let remainingTime = 60;
@@ -50,6 +53,14 @@ let questions = [
 ];
 console.log(questions)
 
+// Function initiated when user starts the quiz
+function startQuiz() {
+  startPage.classList.add("hidden")
+  startTimer();
+  showQuestion();
+  questionContainer.classList.remove("hidden");
+}
+
 // timer function
 function startTimer() {
   timerId = setInterval(function() {
@@ -64,43 +75,41 @@ function startTimer() {
 }
 
 function showQuestion() {
-  
-  if (currentQuestion < questions.length) {
-    startPage.style.display = "none";
-    questionText.style.display = "block";
-    choiceA.style.display = "inline-block";
-    choiceB.style.display = "inline-block";
-    choiceC.style.display = "inline-block";
-    choiceD.style.display = "inline-block";
-  } else {
-    startPage.style.display = "none";
-    gameOver();
-  } 
-  
-  const questionDisplayedNow = questions[currentQuestion];
-  questionText.textContent = questionDisplayedNow.question;
-  
-  const choices = questionContainer.querySelectorAll("button");
-  for (let i = 0; i < choices.length; i++) {
-    const userSelection = questionDisplayedNow.choices[i];
-    choices[i].textContent = questionDisplayedNow.choices[i];
-    choices[i].addEventListener("click", function() {
-      checkAnswer(userSelection);
-      console.log(userSelection);
-    });
+  const currentQuestion = questions[currentQuestionIndex];
+  questionDisplay.textContent = currentQuestion.question;
+  answersDisplay.innerHTML = ""; 
+  var answerOrder;  
+
+  for (let i = 0; i < currentQuestion.answers.length; i++) {
+      const answer = currentQuestion.answers[i];
+      const button = document.createElement("button");
+      answerOrder = i + 1;
+
+      button.textContent = answerOrder +" "+ answer;
+      button.addEventListener("click", function() {
+          checkAnswer(answer);
+      });
+      answersDisplay.appendChild(button);
   }
 }
 
-function checkAnswer(userSelection) {
-  const questionDisplayedNow = questions[currentQuestion];
-  if (userSelection === questionDisplayedNow.answer) {
-    // If user selects a correct answer, increase score by 5
-    score += 5;
+function checkAnswer(answer) {
+  const currentQuestion = questions[currentQuestionIndex];
+  if (answer === currentQuestion.correctAnswer) {
+    // If user selects a correct answer, increase score by 1
+    score += 1;
     // If answer is correct display 'Correct Answer!" for one second
     correctAnswerDisplay.classList.remove("hidden");
     setTimeout(() => {
         correctAnswerDisplay.classList.add("hidden");
     }, 1000);
+    // Move to the next question even if the answer is correct
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      showQuestion();
+    } else {
+        gameOver();
+    }
   } else {
     // If answer is wrong display 'Wrong Answer!" for one second
     wrongAnswerDisplay.classList.remove("hidden");
@@ -108,30 +117,103 @@ function checkAnswer(userSelection) {
         wrongAnswerDisplay.classList.add("hidden");
     }, 1000);
 
-    // When user selects the wrong answer, then time is subtracted from the clock by -10 seconds
-    remainingTime = remainingTime - 10  
+    // When user answers a question incorrectly, then time is subtracted by -10 seconds
+    remainingTime = remainingTime - 10       
+    
+    // Move to the next question even if the answer is wrong
+    currentQuestionIndex++; 
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        gameOver();
+    }
   }
-  currentQuestion++;
-  showQuestion();
 }
 
 function gameOver() {
-  clearInterval(timerId);
-  startButton.style.display = "none";
-  questionText.style.display = "none";
-  choiceA.style.display = "none";
-  choiceB.style.display = "none";
-  choiceC.style.display = "none";
-  choiceD.style.display = "none";
-  initialPage.style.display = "block";
+  gameOverHeading.textContent = "";
 
-  // scoreboard.textContent = `Your Score: ${score}`;
-  // You can implement high score storage here (local storage, database etc.)
+  if (score < 3 ){
+    gameOverHeading.textContent = "You did NOT pass. Please try again!"   
+  } else {
+    gameOverHeading.textContent = "You passed! Congratulations!"
+  }
+  
+  questionContainer.classList.add("hidden");
+  initialPage.classList.remove("hidden");
+
+  clearInterval(timerId);
+  initialPage.addEventListener("submit", saveHighScore);
+  highScoresLink.classList.remove("hidden");
 }
 
-startButton.addEventListener("click", function() {
-  currentQuestion++;
-  showQuestion();
-  startTimer();
-});
+// When user submits intitials, it saves to local storage with both intials and score 
+function saveHighScore(event) {
+  event.preventDefault();
+  const initials = document.getElementById("initials").value.toUpperCase();
+  const finishedTime = remainingTime;
+  const highScoreData = JSON.parse(localStorage.getItem("Scores")) || [];
+  highScoreData.push({ initials, score, finishedTime});
+  // Sorted by high scores
+  highScoreData.sort((a, b) => b.score - a.score);
+  localStorage.setItem("Scores", JSON.stringify(highScoreData));
+  displayHighScores();
+}
 
+function displayHighScores() {
+  initialPage.classList.add("hidden");
+  questionContainer.classList.add("hidden");
+  highScoresList.classList.remove("hidden")
+  goBackButton.classList.remove("hidden")
+  clearButton.classList.remove("hidden")
+  highScoreText.classList.remove("hidden")
+  const highScoreData = JSON.parse(localStorage.getItem("Scores")) || [];
+  let html = ''; // Initialize an empty string to store the HTML content
+  // Iterate over each item in highScoreData
+  for (let i = 0; i < highScoreData.length; i++) {
+    const data = highScoreData[i];
+    // Concatenate the HTML content for each item
+    // html += '<li>' + data.initials + ': <span>' + data.score + ' % </span></li>';
+
+    html += "<li>" + data.initials + ": <span>" + data.score + "/4 </span>" + "  Completed the quiz with: " + data.finishedTime + " seconds remaining</li>";
+  }
+  // Set the innerHTML of highscoresList with the concatenated HTML
+  highScoresList.innerHTML = html;
+};
+
+highScoresLink.addEventListener("click", function() {
+  initialPage.classList.add("hidden");
+  questionContainer.classList.add("hidden");
+  highScoresList.classList.remove("hidden");
+  // Call displayHighScores to update highScoresList
+  displayHighScores(); 
+  }
+);
+
+function goBack() {
+ // Reset variables to initial state
+ currentQuestionIndex = 0;
+ remainingTime = 60;
+ score = 0;
+ // Reset timer display
+ timerElement.textContent = remainingTime;
+ // Show quiz start screen only
+ initialPage.classList.add("hidden");
+ questionContainer.classList.remove("hidden");
+ goBackButton.classList.add("hidden")
+ clearButton.classList.add("hidden")
+ highScoreText.classList.add("hidden")
+ // Clear the high scores list
+ highScoresList.innerHTML = "";
+}
+
+function clearLocalStorage() {
+  //Remove the "Scores" key from local storage
+  localStorage.removeItem("Scores");
+  // Clear the highScoresList
+  highScoresList.innerHTML = ""; 
+}
+
+startButton.addEventListener("click", startQuiz);
+goBackButton.addEventListener("click", goBack);
+clearButton.addEventListener("click", clearLocalStorage);
